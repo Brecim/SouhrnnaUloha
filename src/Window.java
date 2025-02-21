@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.IllegalFormatException;
@@ -29,6 +30,7 @@ public class Window extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pack();
         scan();
+        nazevHry.setBorder(BorderFactory.createLineBorder(Color.black));
         prevBt.addActionListener(e -> {
             if (currentLine > 0) {
                 currentLine--;
@@ -36,9 +38,10 @@ public class Window extends JFrame {
             }
         });
         nextBt.addActionListener(e -> {
-            if (currentLine < lines.size() - 1) {
+            if (currentLine < lines.size()) {
                 currentLine++;
                 scan();
+            } else {
             }
         });
         saveBt.addActionListener(e -> saveToFile());
@@ -55,13 +58,15 @@ public class Window extends JFrame {
             if (currentLine < lines.size()) {
                 String line = lines.get(currentLine);
                 String[] data = line.split(";");
-                Deskovka deskovka = new Deskovka(data[0], Boolean.parseBoolean(data[1]), Integer.parseInt(data[2]));
+                Deskovka deskovka = new Deskovka(data[0].trim(), Boolean.parseBoolean(data[1].trim()), Integer.parseInt(data[2].trim()));
                 nazevHry.setText(deskovka.getNazev());
                 jeKoupenaChBx.setSelected(deskovka.isJeKoupena());
                 obl1.setSelected(deskovka.getOblibenost() == 1);
                 obl2.setSelected(deskovka.getOblibenost() == 2);
                 obl3.setSelected(deskovka.getOblibenost() == 3);
             }
+            prevBt.setEnabled(currentLine > 0);
+            nextBt.setEnabled(currentLine < lines.size() - 1);
         } catch (FileNotFoundException e) {
             e.getMessage();
             System.exit(404);
@@ -74,6 +79,9 @@ public class Window extends JFrame {
         } catch (IOException e) {
             e.getMessage();
             System.exit(403);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            e.getMessage();
+            System.exit(103);
         }
     }
 
@@ -108,17 +116,20 @@ public class Window extends JFrame {
                     pw.println(newLine);
                 }
             } catch (NumberFormatException e) {
-                e.getMessage();
+                System.err.println(e.getMessage());
                 System.exit(101);
             } catch (IllegalFormatException e) {
-                e.getMessage();
+                System.err.println(e.getMessage());
                 System.exit(102);
             } catch (IOException e) {
-                e.getMessage();
+                System.err.println(e.getMessage());
                 System.exit(403);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                System.err.println(e.getMessage());
+                System.exit(103);
             }
         } catch (FileNotFoundException e) {
-            e.getMessage();
+            System.err.println(e.getMessage());
             System.exit(404);
         }
     }
@@ -136,8 +147,17 @@ public class Window extends JFrame {
             }
             pw.println(nazev + ";" + jeKoupena + ";" + oblibenost);
         } catch (IOException e) {
-            e.getMessage();
+            System.err.println(e.getMessage());
             System.exit(403);
+        } catch (IndexOutOfBoundsException e) {
+            System.err.println(e.getMessage());
+            System.exit(103);
+        } catch (NumberFormatException e) {
+            System.err.println(e.getMessage());
+            System.exit(101);
+        } catch (IllegalFormatException e) {
+            System.err.println(e.getMessage());
+            System.exit(102);
         }
     }
 
