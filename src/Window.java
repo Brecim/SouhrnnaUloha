@@ -17,8 +17,9 @@ public class Window extends JFrame {
     private JRadioButton obl3;
     private JButton saveBt;
     private JButton addBt;
+    private JButton delBt;
     private int currentLine = 0;
-    private List<String> lines = new ArrayList<>();
+    private final List<String> lines = new ArrayList<>();
 
     public Window() {
         initComponents();
@@ -31,6 +32,8 @@ public class Window extends JFrame {
         pack();
         scan();
         nazevHry.setBorder(BorderFactory.createLineBorder(Color.black));
+        delBt.setBackground(Color.red);
+        addBt.setBackground(Color.green);
         prevBt.addActionListener(e -> {
             if (currentLine > 0) {
                 currentLine--;
@@ -46,6 +49,7 @@ public class Window extends JFrame {
         });
         saveBt.addActionListener(e -> saveToFile());
         addBt.addActionListener(e -> addDeskovka());
+        delBt.addActionListener(e -> delDeskovka());
 
     }
 
@@ -76,9 +80,6 @@ public class Window extends JFrame {
         } catch (IllegalFormatException e) {
             System.err.println(e.getMessage());
             System.exit(102);
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-            System.exit(403);
         } catch (ArrayIndexOutOfBoundsException e) {
             System.err.println(e.getMessage());
             System.exit(103);
@@ -121,18 +122,16 @@ public class Window extends JFrame {
             } catch (IllegalFormatException e) {
                 System.err.println(e.getMessage());
                 System.exit(102);
-            } catch (IOException e) {
-                System.err.println(e.getMessage());
-                System.exit(403);
             } catch (ArrayIndexOutOfBoundsException e) {
                 System.err.println(e.getMessage());
                 System.exit(103);
             }
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             System.err.println(e.getMessage());
-            System.exit(404);
+            System.exit(403);
         }
     }
+
     private void addDeskovka() {
         try (PrintWriter pw = new PrintWriter(new FileWriter("deskovky.txt", true))) {
             String nazev = nazevHry.getText();
@@ -161,7 +160,28 @@ public class Window extends JFrame {
         }
     }
 
-
+    private void delDeskovka() {
+        if (!lines.isEmpty() && currentLine >= 0) {
+            lines.remove(currentLine);
+            try (PrintWriter pw = new PrintWriter(new FileWriter("deskovky.txt"))) {
+                for (String line : lines) {
+                    pw.println(line);
+                }
+            } catch (IOException e) {
+                System.err.println(e.getMessage());
+                System.exit(403);
+            } catch (IndexOutOfBoundsException e) {
+                System.err.println(e.getMessage());
+                System.exit(103);
+            } catch (NumberFormatException e) {
+                System.err.println(e.getMessage());
+                System.exit(101);
+            } catch (IllegalFormatException e) {
+                System.err.println(e.getMessage());
+                System.exit(102);
+            }
+        }
+    }
 }
 
 
