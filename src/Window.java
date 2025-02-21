@@ -68,19 +68,19 @@ public class Window extends JFrame {
             prevBt.setEnabled(currentLine > 0);
             nextBt.setEnabled(currentLine < lines.size() - 1);
         } catch (FileNotFoundException e) {
-            e.getMessage();
+            System.err.println(e.getMessage());
             System.exit(404);
         } catch (NumberFormatException e) {
-            e.getMessage();
+            System.err.println(e.getMessage());
             System.exit(101);
         } catch (IllegalFormatException e) {
-            e.getMessage();
+            System.err.println(e.getMessage());
             System.exit(102);
         } catch (IOException e) {
-            e.getMessage();
+            System.err.println(e.getMessage());
             System.exit(403);
         } catch (ArrayIndexOutOfBoundsException e) {
-            e.getMessage();
+            System.err.println(e.getMessage());
             System.exit(103);
         }
     }
