@@ -1,3 +1,4 @@
 Monopoly;true;1
 Člověče, nezlob se!;false;2
 Scrabble;true;3
+Monopoly;true;1

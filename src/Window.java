@@ -1,5 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.IllegalFormatException;
@@ -19,7 +22,16 @@ public class Window extends JFrame {
     private JButton addBt;
     private JButton delBt;
     private int currentLine = 0;
-    private final List<String> lines = new ArrayList<>();
+    public final List<String> lines = new ArrayList<>();
+
+    private JMenuBar menuBar = new JMenuBar();
+    private JMenu fileMenu = new JMenu("Soubor");
+    private JMenuItem closeItem = new JMenuItem("Zavřít", KeyEvent.VK_Z);
+    private JMenuItem testItem = new JMenuItem("Test");
+    private JMenuItem statMenu = new JMenuItem("Statistiky");
+
+    private JFrame frame = new JFrame();
+    private JPopupMenu popupMenu = new JPopupMenu();
 
     public Window() {
         initComponents();
@@ -29,6 +41,7 @@ public class Window extends JFrame {
         setContentPane(mainPn);
         setTitle("Deskovky");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        menuConfig();
         pack();
         scan();
         nazevHry.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -51,6 +64,33 @@ public class Window extends JFrame {
         addBt.addActionListener(e -> addDeskovka());
         delBt.addActionListener(e -> delDeskovka());
 
+    }
+
+    private void menuConfig() {
+        setJMenuBar(menuBar);
+        menuBar.add(fileMenu);
+        fileMenu.add(closeItem);
+        fileMenu.add(testItem);
+
+        menuBar.add(statMenu);
+
+        closeItem.addActionListener(e -> System.exit(0));
+        closeItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK));
+
+        testItem.addActionListener(e -> {
+            JOptionPane.showMessageDialog(this, "Test", "Test", JOptionPane.INFORMATION_MESSAGE);
+        });
+
+        statMenu.addActionListener(e -> stats());
+
+
+
+
+    }
+
+    private void stats() {
+        Popup popup = new Popup();
+        popup.setVisible(true);
     }
 
     private void scan() {
