@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
@@ -29,10 +30,7 @@ public class Window extends JFrame {
     private JMenuItem closeItem = new JMenuItem("Zavřít", KeyEvent.VK_Z);
     private JMenuItem testItem = new JMenuItem("Test");
     private JMenuItem statMenu = new JMenuItem("Statistiky");
-    private JMenuItem saveMenu = new JMenuItem("Uložit");
-
-    private JFrame frame = new JFrame();
-    private JPopupMenu popupMenu = new JPopupMenu();
+    private JMenuItem pathMenu = new JMenuItem("Ukázat soubor");
 
     public Window() {
         initComponents();
@@ -73,7 +71,7 @@ public class Window extends JFrame {
 
         fileMenu.add(closeItem);
         fileMenu.add(testItem);
-        fileMenu.add(saveMenu);
+        fileMenu.add(pathMenu);
 
         menuBar.add(statMenu);
 
@@ -86,7 +84,7 @@ public class Window extends JFrame {
 
         statMenu.addActionListener(e -> stats());
 
-        saveMenu.addActionListener(e -> saveFileGUI());
+        pathMenu.addActionListener(e -> openFileGUI());
 
 
 
@@ -98,9 +96,11 @@ public class Window extends JFrame {
         popup.setVisible(true);
     }
 
-    private void saveFileGUI() {
+    private void openFileGUI() {
         JFileChooser fc = new JFileChooser();
-        int result = fc.showSaveDialog(this);
+        fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
+        fc.setFileFilter(new FileNameExtensionFilter("Text", "txt"));
+        int result = fc.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fc.getSelectedFile();
             JOptionPane.showMessageDialog(this, "Path: " + selectedFile, "Path", JOptionPane.INFORMATION_MESSAGE);
