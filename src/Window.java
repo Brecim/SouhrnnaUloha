@@ -1,7 +1,6 @@
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.*;
@@ -84,7 +83,7 @@ public class Window extends JFrame {
 
         statMenu.addActionListener(e -> stats());
 
-        pathMenu.addActionListener(e -> openFileGUI());
+        pathMenu.addActionListener(e -> pathFileGUI());
 
 
 
@@ -96,9 +95,8 @@ public class Window extends JFrame {
         popup.setVisible(true);
     }
 
-    private void openFileGUI() {
-        JFileChooser fc = new JFileChooser();
-        fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
+    private void pathFileGUI() {
+        JFileChooser fc = new JFileChooser(".");
         fc.setFileFilter(new FileNameExtensionFilter("Text", "txt"));
         int result = fc.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
