@@ -29,6 +29,7 @@ public class Window extends JFrame {
     private JMenuItem closeItem = new JMenuItem("Zavřít", KeyEvent.VK_Z);
     private JMenuItem testItem = new JMenuItem("Test");
     private JMenuItem statMenu = new JMenuItem("Statistiky");
+    private JMenuItem saveMenu = new JMenuItem("Uložit");
 
     private JFrame frame = new JFrame();
     private JPopupMenu popupMenu = new JPopupMenu();
@@ -69,8 +70,10 @@ public class Window extends JFrame {
     private void menuConfig() {
         setJMenuBar(menuBar);
         menuBar.add(fileMenu);
+
         fileMenu.add(closeItem);
         fileMenu.add(testItem);
+        fileMenu.add(saveMenu);
 
         menuBar.add(statMenu);
 
@@ -83,6 +86,8 @@ public class Window extends JFrame {
 
         statMenu.addActionListener(e -> stats());
 
+        saveMenu.addActionListener(e -> saveFileGUI());
+
 
 
 
@@ -91,6 +96,15 @@ public class Window extends JFrame {
     private void stats() {
         Popup popup = new Popup();
         popup.setVisible(true);
+    }
+
+    private void saveFileGUI() {
+        JFileChooser fc = new JFileChooser();
+        int result = fc.showSaveDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fc.getSelectedFile();
+            JOptionPane.showMessageDialog(this, "Path: " + selectedFile, "Path", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     private void scan() {
